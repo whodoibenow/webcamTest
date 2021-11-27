@@ -1,41 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webcam</title>
-    <script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
+
 <style>
-    a
-    {
-        padding: 10px;
-        background-color: orange;
-        color: white;
-        text-decoration: none;
-    }
-    video
-    {
-        align-items: center;
-    }
+ #my_camera{
+     width: 320px;
+     height: 240px;
+     border: 1px solid black;
+}
 </style>
-</head>
-<body>
-    <video id="webcam" autoplay playsinline width="600" height="400"></video>
-    <canvas id="canvas"></canvas>
-    <a download onclick="startwebcam()">CHECK</a>
 
+<div id="my_camera"></div>
+<input type=button value="Take Snapshot" onClick="take_snapshot()">
+ 
+<div id="results" ></div>
+ 
+<!-- Webcam.min.js -->
+<script type="text/javascript" src="webcamjs/webcam.min.js"></script>
 
-<script>
-    const webcamElement = document.getElementById('webcam');
-    const canvasElement = document.getElementById('canvas');
-    const webcam = new Webcam(webcamElement, "user", canvasElement);
-    webcam.start();
+<!-- Configure a few settings and attach camera -->
+<script language="JavaScript">
+ Webcam.set({
+     width: 320,
+     height: 240,
+     image_format: 'jpeg',
+     jpeg_quality: 90
+ });
+ Webcam.attach( '#my_camera' );
 
-    function startwebcam() {
-        let picture = webcam.snap();
-        document.querySelector("a").href = picture;
-    }
+<!-- Code to handle taking the snapshot and displaying it locally -->
+function take_snapshot() {
+ 
+   // take snapshot and get image data
+   Webcam.snap( function(data_uri) {
+       // display results in page
+       document.getElementById('results').innerHTML = 
+        '<img src="'+data_uri+'"/>';
+    } );
+}
 </script>
-</body>
-</html>
